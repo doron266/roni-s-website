@@ -1,0 +1,42 @@
+#this is basic caddy file format
+
+{
+    # Global options
+    storage file_system {
+        root /var/lib/caddy  # directory where Caddy stores TLS certificates
+    }
+}
+
+# Redirect www to non-www and enforce HTTPS
+www.fruhling-bakery.com {
+    redir https://fruhling-bakery.com{uri} permanent
+}
+
+# Main site configuration
+fruhling-bakery.com {
+    root * /var/www/html      # Path to your static site files
+    file_server                   # Serve static files
+    encode gzip                   # Enable gzip compression for faster loading
+    log {
+        output file /var/log/caddy/mydomain_access.log {
+            roll_size 10mb
+            roll_keep 10
+            roll_keep_for 720h
+        }
+    }
+
+    # Handle errors
+    handle_errors {
+        rewrite * /error.html
+        file_server
+    }
+
+    # Optional: security headers
+    header {
+        Strict-Transport-Security "max-age=31536000;"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "no-referrer"
+    }
+}
+
