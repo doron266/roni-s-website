@@ -1,26 +1,53 @@
-name: Python CI
+name: Website CI
 
 on:
   
   pull_request:
     branches: [ main ]
 
+env:
+  AWS_REGION: eu-north-1                   # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: 685631290880.dkr.ecr.eu-north-1.amazonaws.com/dw/caddy  # set this to your Amazon ECR repository name
+  # CONTAINER_NAME: MY_CONTAINER_NAME           set this to the name of the container in the
+                                               # containerDefinitions section of your task definition
+  PR_NUMBER: ${{ github.event.number }}
+
+permissions:
+  contents: read
+
 jobs:
-  test:
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+    - name: Building the new version of my site
+      run: |
+        docker build -t mycaddy/${{ PR_NUMBER }} -f CaddyDockerfile
+        docker run -d -p 80:80 -p 443:443 mycaddy/${{ PR_NUMBER }}
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Run tests
-        run: |
-          pytest
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
