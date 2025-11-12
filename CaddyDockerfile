@@ -1,5 +1,8 @@
 # note: never use the :latest tag in a production site
-FROM caddy:builder-alpine
+FROM caddy:latest
 
 COPY Caddyfile /etc/caddy/Caddyfile
 COPY index.html /var/www/html/index.html
+#CMD ["caddy", "run"]
+#CMD ["caddy", "reload", "--config", "/etc/caddy/Caddyfile"]I
+#CMD ["caddy", "fmt", "--overwrite", "/etc/caddy/Caddyfile"]
