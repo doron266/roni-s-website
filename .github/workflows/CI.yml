@@ -11,6 +11,10 @@ env:
   # CONTAINER_NAME: MY_CONTAINER_NAME           set this to the name of the container in the
                                                # containerDefinitions section of your task definition
   PR_NUMBER: ${{ github.event.number }}
+  PRIVATE_KEY: ${{ secrets.PASS_KEY_VALUE }}
+  HOSTNAME: ${{secrets.DEV_IP}}
+  PROD_HOSTNAME: ${{secrets.PROD_IP}}
+  USER_NAME: ${{secrets.USER_NAME}}
 
 permissions:
   contents: read
@@ -24,10 +28,21 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Building the new version of my site
+    - name: Build & Integrate
       run: |
-        docker build -t mycaddy/${{ PR_NUMBER }} -f CaddyDockerfile
-        docker run -d -p 80:80 -p 443:443 mycaddy/${{ PR_NUMBER }}
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" "
+          cd roni-s-website
+          docker build -t mycaddy/${{ PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile &&
+          docker run -d -p 80:80 -p 443:443 mycaddy/${{ PR_NUMBER }}
+          "
+    - name: my Tests
+      run: |
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${PROD_HOSTNAME}" '
+          curl -v test.fruhling-bakery.com
+          '
+        
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
