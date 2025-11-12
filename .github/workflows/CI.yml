@@ -33,7 +33,7 @@ jobs:
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
         ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" "
           cd roni-s-website
-          docker build -t mycaddy/${{ env.PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile &&
+          docker build -t mycaddy/${{ env.PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
           docker run -d -p 80:80 -p 443:443 mycaddy/${{ env.PR_NUMBER }}
           "
     - name: my Tests
