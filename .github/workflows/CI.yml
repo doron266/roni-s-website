@@ -34,7 +34,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" "
           cd roni-s-website
           docker build -t mycaddy/${{ env.PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
-          docker run -d -p 80:80 -p 443:443 -v caddy_data:/var/lib/caddy mycaddy/${{ env.PR_NUMBER }}
+          docker run -d -p 80:80 -p 443:443 -v caddy_data:/data mycaddy/${{ env.PR_NUMBER }}
           "
     - name: my Tests
       run: |
