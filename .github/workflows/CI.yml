@@ -38,7 +38,7 @@ jobs:
           "
     - name: my Tests
       run: |
-        curl -Lv test.fruhling-bakery.com
+        curl -Lv dev.fruhling-bakery.com
         
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1

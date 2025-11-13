@@ -13,7 +13,7 @@
 #}
 
 # Main site configuration
-test.fruhling-bakery.com {
+dev.fruhling-bakery.com {
     root * /var/www/html      # Path to your static site files
     file_server                   # Serve static files
     encode gzip                   # Enable gzip compression for faster loading
