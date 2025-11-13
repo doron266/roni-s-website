@@ -34,7 +34,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" "
           cd roni-s-website
           docker build -t mycaddy/${{ env.PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
-          docker run -d -p 80:80 -p 443:443 --volume=/home/caddy/caddy_data:/data mycaddy/${{ env.PR_NUMBER }}
+          docker run -d -p 80:80 -p 443:443 --volume=/home/caddy/caddy_data:/var/lib/caddy/data mycaddy/${{ env.PR_NUMBER }}
           "
     - name: my Tests
       run: |
@@ -73,6 +73,6 @@ jobs:
     steps:
     - name: Build & Integrate
       run: |
-       # echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        #ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" 'docker stop $(docker ps -aq)'
-        echo "caddy container is runing"
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" 'docker stop $(docker ps -aq)'
+        # echo "caddy container is runing"
