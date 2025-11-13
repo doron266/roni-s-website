@@ -1,4 +1,4 @@
-vname: Website CI
+name: Website CI
 # some changes: 1,
 on:
   
