@@ -1,11 +1,11 @@
 #this is basic caddy file format
 
-{
-    # Global options
-    storage file_system {
-        root /var/lib/caddy  # directory where Caddy stores TLS certificates
-    }
-}
+#{
+#    # Global options
+#    storage file_system {
+#        root /var/lib/caddy  # directory where Caddy stores TLS certificates
+#    }
+#}
 
 # Redirect www to non-www and enforce HTTPS
 #www.fruhling-bakery.com {
