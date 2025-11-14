@@ -34,7 +34,7 @@ jobs:
 
     - name: Build & Integrate
       run: |
-        echo "$ssh_KEY" > ssh_key && chmod 600 ssh_key
+        echo "$SSH_KEY" > ssh_key && chmod 600 ssh_key
         ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${HOSTNAME}" "
           cd roni-s-website
           docker build -t mycaddy:${{ env.PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
@@ -100,6 +100,6 @@ jobs:
     steps:
     - name: Build & Integrate
       run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        echo "$SSH_KEY" > private_key && chmod 600 private_key
         ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" 'docker stop $(docker ps -aq)'
         # echo "caddy container is runing"
