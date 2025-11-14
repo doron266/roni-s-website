@@ -1,8 +1,8 @@
-name: Website CI
+name: Website CD
 # some changes: 1,
 on:
   
-  pull_request:
+  push:
     branches: [ main ]
 
 env:
@@ -11,7 +11,7 @@ env:
   # CONTAINER_NAME: MY_CONTAINER_NAME           set this to the name of the container in the
                                                # containerDefinitions section of your task definition
   PR_NUMBER: ${{ github.event.number }}
-  PRIVATE_KEY: ${{ secrets.PASS_KEY_VALUE }}
+  SSH_KEY: ${{ secrets.PASS_KEY_VALUE }}
   HOSTNAME: ${{secrets.DEV_IP}}
   PROD_HOSTNAME: ${{secrets.PROD_IP}}
   USER_NAME: ${{secrets.USER_NAME}}
@@ -28,10 +28,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: install ansible
+      run: |
+        sudo apt-get install -y ansible
+
     - name: Build & Integrate
       run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" "
+        echo "$ssh_KEY" > ssh_key && chmod 600 ssh_key
+        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${HOSTNAME}" "
           cd roni-s-website
           docker build -t mycaddy:${{ env.PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
           docker run -d -p 80:80 -p 443:443 -v caddy_data:/data mycaddy:${{ env.PR_NUMBER }}
@@ -60,13 +64,34 @@ jobs:
 
       run: |
         # Build the image
-        docker build -t $IMAGE_NAME:$IMAGE_TAG -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile .
+        docker build -t $IMAGE_NAME:latest -f CaddyDockerfile --build-arg Caddyfile=Caddyfile .
 
         # Tag it for ECR
-        docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+        docker tag $IMAGE_NAME:latest $ECR_REGISTRY/$IMAGE_NAME:latest
 
         # Push to ECR
-        docker push $ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$IMAGE_NAME:latest
+
+    - name: Add SSH key
+      run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+    - name: Setting up prod server
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: ansible-playbook -i inventory.ini playbook.yml 
+   
+    - name: continuos delivery
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${HOSTNAME}" "
+          docker stop $(docker ps -aq) &&
+          docker run -d -p 80:80 -p 443:443 -v caddy_data:/data $ECR_REGISTRY/$IMAGE_NAME:latest
+          "
+
+        
   post-tasks:
     name: Cleanup Dev Server
     runs-on: ubuntu-latest

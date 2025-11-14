@@ -1,0 +1,30 @@
+# playbook.yml
+- hosts: all
+  become: yes
+  vars:
+    aws_region: us-east-1
+    ecr_registry: "123456789012.dkr.ecr.us-east-1.amazonaws.com"
+
+  tasks:
+    - name: Ensure AWS CLI installed
+      package:
+        name: awscli
+        state: present
+
+    - name: Ensure Docker installed
+      package:
+        name: docker
+        state: present
+
+    - name: Start and enable Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Login to Amazon ECR
+      shell: |
+        aws ecr get-login-password --region {{ aws_region }} \
+        | docker login --username AWS --password-stdin {{ ecr_registry }}
+      register: ecr_login
+      changed_when: "'Login Succeeded' in ecr_login.stdout"

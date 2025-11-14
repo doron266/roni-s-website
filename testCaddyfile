@@ -1,13 +1,19 @@
 #this is basic caddy file format
 
+#{
+#    # Global options
+#    storage file_system {
+#        root /var/lib/caddy  # directory where Caddy stores TLS certificates
+#    }
+#}
 
 # Redirect www to non-www and enforce HTTPS
-www.fruhling-bakery.com {
-    redir https://fruhling-bakery.com{uri} permanent
-}
+#www.fruhling-bakery.com {
+#    redir https://fruhling-bakery.com{uri} permanent
+#}
 
 # Main site configuration
-fruhling-bakery.com {
+dev.fruhling-bakery.com {
     root * /var/www/html      # Path to your static site files
     file_server                   # Serve static files
     encode gzip                   # Enable gzip compression for faster loading
