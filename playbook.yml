@@ -2,8 +2,8 @@
 - hosts: all
   become: yes
   vars:
-    aws_region: us-east-1
-    ecr_registry: "123456789012.dkr.ecr.us-east-1.amazonaws.com"
+    aws_region: eu-north-1
+    ecr_registry: "685631290880.dkr.ecr.eu-north-1.amazonaws.com"
 
   tasks:
     - name: Ensure AWS CLI installed
@@ -21,6 +21,17 @@
         name: docker
         state: started
         enabled: yes
+
+    - name: Configure AWS CLI using GitHub Secrets
+      shell: |
+        aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID" &&
+        aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY" &&
+        aws configure set default.region "$AWS_REGION"
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+        AWS_SECRET_ACCESS_KEY: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        AWS_REGION: "{{ lookup('env', 'AWS_REGION') }}"
+
 
     - name: Login to Amazon ECR
       shell: |

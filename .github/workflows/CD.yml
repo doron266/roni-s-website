@@ -6,6 +6,9 @@ on:
     branches: [ main ]
 
 env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: "eu-north-1"
   AWS_REGION: eu-north-1                   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: 685631290880.dkr.ecr.eu-north-1.amazonaws.com/dw/caddy  # set this to your Amazon ECR repository name
   # CONTAINER_NAME: MY_CONTAINER_NAME           set this to the name of the container in the
