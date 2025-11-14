@@ -32,13 +32,19 @@ jobs:
       run: |
         sudo apt-get install -y ansible
 
+    - name: Create merge tag
+      run: |
+        TAG="merge-$(date +'%Y%m%d-%H%M%S')"
+        echo "TAG=$TAG" >> $GITHUB_ENV
+
+
     - name: Build & Integrate
       run: |
         echo "$SSH_KEY" > ssh_key && chmod 600 ssh_key
         ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${HOSTNAME}" "
           cd roni-s-website
-          docker build -t mycaddy:${{ env.PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
-          docker run -d -p 80:80 -p 443:443 -v caddy_data:/data mycaddy:${{ env.PR_NUMBER }}
+          docker build -t mycaddy:${{ env.TAG }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
+          docker run -d -p 80:80 -p 443:443 -v caddy_data:/data mycaddy:${{ env.TAG }}
           "
     - name: my Tests
       run: |
