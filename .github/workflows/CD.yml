@@ -88,11 +88,13 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: ansible-playbook -i inventory.ini playbook.yml 
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${PROD_HOSTNAME}" "echo code0"
+        ansible-playbook -i inventory.ini playbook.yml 
    
     - name: continuos delivery
       run: |
-        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${HOSTNAME}" "
+        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${PROD_HOSTNAME}" "
           docker stop $(docker ps -aq) &&
           docker run -d -p 80:80 -p 443:443 -v caddy_data:/data $ECR_REGISTRY/$IMAGE_NAME:latest
           "
