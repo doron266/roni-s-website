@@ -2,7 +2,7 @@ name: Website CD
 # some changes: 1,
 on:
   
-  pull_request:
+  push:
     branches: [ main ]
 
 env:
@@ -64,7 +64,7 @@ jobs:
 
       run: |
         # Build the image
-        docker build -t $IMAGE_NAME:latest -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile .
+        docker build -t $IMAGE_NAME:latest -f CaddyDockerfile --build-arg Caddyfile=Caddyfile .
 
         # Tag it for ECR
         docker tag $IMAGE_NAME:latest $ECR_REGISTRY/$IMAGE_NAME:latest
@@ -72,18 +72,26 @@ jobs:
         # Push to ECR
         docker push $ECR_REGISTRY/$IMAGE_NAME:latest
 
-      - name: Add SSH key
-        run: |
+    - name: Add SSH key
+      run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
     - name: Setting up prod server
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: ansible-playbook -i inventory.ini playbook.yml 
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: ansible-playbook -i inventory.ini playbook.yml 
+   
+    - name: continuos delivery
+      run: |
+        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${HOSTNAME}" "
+          docker stop $(docker ps -aq) &&
+          docker run -d -p 80:80 -p 443:443 -v caddy_data:/data $ECR_REGISTRY/$IMAGE_NAME:latest
+          "
 
+        
   post-tasks:
     name: Cleanup Dev Server
     runs-on: ubuntu-latest
