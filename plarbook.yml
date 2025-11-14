@@ -1,0 +1,14 @@
+# playbook.yml
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker
+      package:
+        name: docker
+        state: present
+
+    - name: Enable Docker service
+      service:
+        name: docker
+        enabled: yes
+        state: started
