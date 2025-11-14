@@ -81,15 +81,16 @@ jobs:
     - name: Add SSH key
       run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ env.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ PROD_HOSTNAME }} >> ~/.ssh/known_hosts
 
     - name: Setting up prod server
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
-        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${PROD_HOSTNAME}" "echo code0"
+        ssh -o -i ssh_key "${USER_NAME}@${PROD_HOSTNAME}" "echo code0"
         ansible-playbook -i inventory.ini playbook.yml 
    
     - name: continuos delivery
