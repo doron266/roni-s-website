@@ -34,6 +34,8 @@
 
 
     - name: Login to Amazon ECR
+      become: yes
+      become_user: ec2-user
       shell: |
         aws ecr get-login-password --region {{ aws_region }} \
         | docker login --username AWS --password-stdin {{ ecr_registry }}
