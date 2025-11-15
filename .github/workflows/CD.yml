@@ -97,7 +97,7 @@ jobs:
     - name: continuos delivery
       run: |
         ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${PROD_HOSTNAME}" "
-          docker stop \\\$(docker ps -aq) &&
+          docker stop \\$(docker ps -aq) &&
           docker run -d -p 80:80 -p 443:443 -v caddy_data:/data $ECR_REGISTRY/$IMAGE_NAME:latest
           "
 
