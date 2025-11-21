@@ -71,6 +71,10 @@ jobs:
         IMAGE_TAG: ${{ env.PR_NUMBER }}
 
       run: |
+        docker images
+        pwd
+        ls
+        cat index.html
         # Build the image
         docker build -t $IMAGE_NAME:latest -f CaddyDockerfile --build-arg Caddyfile=Caddyfile .
 
