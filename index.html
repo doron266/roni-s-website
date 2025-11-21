@@ -11,6 +11,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
             line-height: 1.6;
@@ -23,8 +27,8 @@
         }
 
         header {
-            background: linear-gradient(135deg, #f5e6d3 0%, #d4a574 100%);
-            padding: 2rem 0;
+            background: linear-gradient(135deg, #fff0f7 0%, #ffe6f0 100%);
+            padding: 1.5rem 0 0 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
@@ -34,17 +38,42 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
+            padding: 0 2rem 1.5rem 2rem;
+        }
+
+        .logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem 0;
+            background: linear-gradient(135deg, #ffc4e1 0%, #ffb3d9 100%);
         }
 
         .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #6b4423;
-            text-decoration: none;
+            height: auto;
+            width: 90%;
+            max-width: 1000px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            padding: 0.25rem 2rem;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* S3 Base URL */
+        :root {
+            --s3-base: 'https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images';
+        }
+
+        .social-icons {
+            display: flex;
             gap: 1rem;
+            align-items: center;
         }
 
         .instagram-icon {
@@ -93,6 +122,29 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
+        .whatsapp-icon {
+            width: 35px;
+            height: 35px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #25D366;
+            border-radius: 8px;
+            padding: 6px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .whatsapp-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: white;
+        }
+
+        .whatsapp-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        }
+
         .nav-links {
             display: flex;
             gap: 2rem;
@@ -101,18 +153,19 @@
         }
 
         .nav-links a {
-            color: #6b4423;
+            color: #e05098;
             text-decoration: none;
             font-size: 1.1rem;
             transition: color 0.3s;
+            font-weight: 500;
         }
 
         .nav-links a:hover {
-            color: #8b5a3c;
+            color: #ff85c1;
         }
 
         .lang-switcher {
-            background: #6b4423;
+            background: #e05098;
             color: white;
             border: none;
             padding: 0.5rem 1rem;
@@ -123,151 +176,263 @@
         }
 
         .lang-switcher:hover {
-            background: #8b5a3c;
-        }
-
-        .hero {
-            background: linear-gradient(rgba(107, 68, 35, 0.7), rgba(107, 68, 35, 0.7)),
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23f5e6d3" width="1200" height="600"/><path fill="%23d4a574" opacity="0.3" d="M0 300 Q300 200 600 300 T1200 300 V600 H0 Z"/></svg>');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-            padding: 8rem 2rem;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: #d4a574;
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn:hover {
-            background: #b8935f;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: #6b4423;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: #d4a574;
-            margin: 1rem auto;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 250px;
-            background: linear-gradient(135deg, #f5e6d3, #d4a574);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-        }
-
-        .product-info {
-            padding: 1.5rem;
-        }
-
-        .product-info h3 {
-            color: #6b4423;
-            margin-bottom: 0.5rem;
-            font-size: 1.5rem;
-        }
-
-        .product-info p {
-            color: #666;
-            margin-bottom: 1rem;
-        }
-
-        .price {
-            font-size: 1.3rem;
-            color: #d4a574;
-            font-weight: bold;
+            background: #ff85c1;
         }
 
         .about {
-            background: #f9f6f2;
+            background: linear-gradient(135deg, #fff5fa 0%, #fff0f7 100%);
             padding: 4rem 2rem;
         }
 
         .about-content {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            text-align: center;
-            font-size: 1.1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(224, 80, 152, 0.15);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .about-text {
+            text-align: right;
+        }
+
+        body.ltr .about-text {
+            text-align: left;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: #e05098;
+            margin-bottom: 2rem;
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
             line-height: 1.8;
             color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .products-section {
+            width: 100%;
+            background: linear-gradient(135deg, #fff0f7 0%, #ffe6f0 100%);
+            padding: 4rem 0;
+        }
+
+        .products-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #e05098;
+            margin-bottom: 3rem;
+        }
+
+        .products-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .product-component {
+            width: 100%;
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .product-component img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s;
+        }
+
+        .product-component:hover img {
+            transform: scale(1.05);
+        }
+
+        .product-description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(224, 80, 152, 0.85);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .product-component:hover .product-description {
+            background: rgba(224, 80, 152, 0.95);
+        }
+
+        .gallery-section {
+            width: 100%;
+            background: linear-gradient(135deg, #fff5fa 0%, #fff0f7 100%);
+            padding: 4rem 0;
+        }
+
+        .gallery-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #e05098;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            padding: 0 4rem;
+        }
+
+        .gallery-slider {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 1rem 0;
+        }
+
+        .gallery-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gallery-item {
+            min-width: 350px;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(224, 80, 152, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(224, 80, 152, 0.8);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        .gallery-nav:hover {
+            background: rgba(224, 80, 152, 1);
+        }
+
+        .gallery-nav.prev {
+            left: 0.5rem;
+        }
+
+        .gallery-nav.next {
+            right: 0.5rem;
         }
 
         footer {
-            background: #6b4423;
+            background: linear-gradient(135deg, #ffc4e1 0%, #ffb3d9 100%);
             color: white;
             text-align: center;
-            padding: 2rem;
+            padding: 3rem 2rem;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .contact-info {
             margin-top: 1rem;
+            color: white;
         }
 
         .contact-info p {
             margin: 0.5rem 0;
+            color: white;
         }
 
-        .hidden {
-            display: none;
+        @media (max-width: 968px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-image {
+                height: 300px;
+            }
+
+            .about-text h2 {
+                font-size: 2rem;
+            }
+
+            .about-text p {
+                font-size: 1.1rem;
+            }
+
+            .product-component {
+                height: 350px;
+            }
+
+            .product-description {
+                font-size: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .gallery-item {
+                min-width: 280px;
+                height: 320px;
+            }
+
+            .gallery-container {
+                padding: 0 3rem;
+            }
+
+            .gallery-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -277,18 +442,21 @@
                 padding: 1rem;
             }
 
+            .logo-container {
+                padding: 3rem 0;
+            }
+
             .logo {
-                font-size: 1.5rem;
-                gap: 0.7rem;
+                height: 70px;
             }
 
-            .instagram-icon {
-                width: 30px;
-                height: 30px;
-                font-size: 1.1rem;
+            .social-icons {
+                gap: 0.8rem;
             }
 
-            .tiktok-icon {
+            .instagram-icon,
+            .tiktok-icon,
+            .whatsapp-icon {
                 width: 30px;
                 height: 30px;
             }
@@ -296,90 +464,27 @@
             .nav-links {
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 0.8rem;
-                font-size: 0.9rem;
+                gap: 1rem;
             }
 
             .nav-links a {
                 font-size: 1rem;
             }
 
-            .lang-switcher {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.9rem;
-            }
-
-            .hero {
-                padding: 4rem 1rem;
-            }
-
-            .hero h1 {
+            .products-title {
                 font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1.2rem;
-            }
-
-            .btn {
-                padding: 0.8rem 2rem;
-                font-size: 1rem;
-            }
-
-            .container {
-                padding: 2rem 1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .products {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .product-info h3 {
-                font-size: 1.3rem;
-            }
-
-            .product-info p {
-                font-size: 0.95rem;
-            }
-
-            .about-content {
-                font-size: 1rem;
-                padding: 0 1rem;
-            }
-
-            footer {
-                padding: 1.5rem 1rem;
-            }
-
-            .contact-info p {
-                font-size: 0.95rem;
             }
         }
 
         @media (max-width: 480px) {
-            .hero h1 {
+            .about-text h2,
+            .products-title {
                 font-size: 1.7rem;
             }
 
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-title {
-                font-size: 1.7rem;
-            }
-
-            .nav-links {
-                gap: 0.5rem;
-            }
-
-            .nav-links a {
-                font-size: 0.9rem;
+            .product-description {
+                font-size: 1.3rem;
+                padding: 1rem;
             }
         }
     </style>
@@ -387,8 +492,7 @@
 <body>
     <header>
         <nav>
-            <a href="#" class="logo">
-                <span>Fruhling Bakery</span>
+            <div class="social-icons">
                 <a href="https://www.instagram.com/fruhling.bakery?igsh=eGxzeXBjZW03dndv&utm_source=qr" target="_blank" class="instagram-icon" title="Instagram">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                         <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
@@ -399,105 +503,159 @@
                         <path d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z"/>
                     </svg>
                 </a>
-            </a>
+                <a href="https://wa.me/972543260188" target="_blank" class="whatsapp-icon" title="WhatsApp">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+                    </svg>
+                </a>
+            </div>
             <ul class="nav-links">
-                <li><a href="#home" class="nav-home">בית</a></li>
-                <li><a href="#products" class="nav-products">מוצרים</a></li>
                 <li><a href="#about" class="nav-about">אודות</a></li>
+                <li><a href="#gallery" class="nav-gallery">גלריה</a></li>
                 <li><a href="#contact" class="nav-contact">צור קשר</a></li>
                 <li><button class="lang-switcher" onclick="toggleLanguage()">English</button></li>
             </ul>
         </nav>
+        <div class="logo-container">
+            <div class="logo">
+                <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/logo.png" alt="Fruhling Bakery Logo">
+            </div>
+        </div>
     </header>
 
-    <section id="home" class="hero">
-        <h1 class="hero-title">ברוכים הבאים למאפיית פרולינג</h1>
-        <p class="hero-subtitle">מאפים צרפתיים אותנטיים מיום ליום</p>
-        <a href="#products" class="btn hero-btn">גלו את המאפים שלנו</a>
+    <section id="about" class="about">
+        <div class="about-content">
+            <div class="about-text">
+                <h2 class="about-title">הסיפור שלנו</h2>
+                <p class="about-p1">
+                    קצת על עצמי :)
+                </p>
+                <p class="about-p2">
+                    נעים מאוד שמי רוני פרילינג, קונדיטורית מאבן יהודה.
+                    לאחר שסיימתי בהצטיינות לימודי קונדיטוריה בבית הספר "בישולים".
+                    המשכתי לסטאז׳ בפריז אצל השף קונדיטור ג׳פרי קנייה המוכשר!
+                </p>
+                <p class="about-p3" style="margin-top: 1rem;">
+                    הקמתי את העסק FRUHLING.BAKERY המתמקד ב:
+                    קינוחי מסעדות וברי יין, קינוחי "ואוו" לאירועים פרטיים,
+                    שיתופי פעולה ופרוייקטים קולינריים.
+                </p>
+                <p class="about-p4" style="margin-top: 1rem;">
+                    שמחה לקחת חלק באירועים מושקעים, לממש את הידע שצברתי ואת הטכניקות שלמדתי באהבה רבה...
+                </p>
+            </div>
+            <div class="about-image">
+                <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/at-jeffrys.jpg" alt="At Jeffrey's">
+            </div>
+        </div>
     </section>
 
-    <section id="products" class="container">
-        <h2 class="section-title products-title">היצירות המיוחדות שלנו</h2>
-        <div class="products">
-            <div class="product-card">
-                <div class="product-image">🥐</div>
-                <div class="product-info">
-                    <h3 class="product1-name">קרואסונים</h3>
-                    <p class="product1-desc">שכבות חמאתיות ופריכות של שלמות. הקרואסונים המיוחדים שלנו מיוצרים עם חמאה צרפתית מובחרת.</p>
-                    <span class="price product1-price">₪18</span>
+    <section class="products-section">
+        <h2 class="products-title section-title">המוצרים שלנו</h2>
+        <div class="products-container">
+            <!-- Component 1 -->
+            <div class="product-component">
+                <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/krokumbush2.jpg" alt="Dessert Table">
+                <div class="product-description product1-desc">
+                    שולחן קינוחי הוואו שלי
                 </div>
             </div>
-
-            <div class="product-card">
-                <div class="product-image">🍰</div>
-                <div class="product-info">
-                    <h3 class="product2-name">מילפיי</h3>
-                    <p class="product2-desc">בצק עלים עדין בשכבות עם קרם וניל ומכוסה בציפוי פונדנט.</p>
-                    <span class="price product2-price">₪26</span>
+            
+            <!-- Component 2 -->
+            <div class="product-component">
+                <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/lemon-tart.jpg" alt="Restaurant Desserts">
+                <div class="product-description product2-desc">
+                    פיתוח קינוחי מסעדות וברי יין
                 </div>
             </div>
-
-            <div class="product-card">
-                <div class="product-image">🧁</div>
-                <div class="product-info">
-                    <h3 class="product3-name">מקרונים</h3>
-                    <p class="product3-desc">עוגיות מרנג שקדים קלילות וצבעוניות עם מילויי גנאש חלקים. זמין ב-8 טעמים.</p>
-                    <span class="price product3-price">₪10 ליחידה</span>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">🍮</div>
-                <div class="product-info">
-                    <h3 class="product4-name">קרם ברולה</h3>
-                    <p class="product4-desc">קרם צרפתי קלאסי עם קרום סוכר מקורמל שמתפצפץ בכל כפית.</p>
-                    <span class="price product4-price">₪28</span>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">🥖</div>
-                <div class="product-info">
-                    <h3 class="product5-name">פאן או שוקולה</h3>
-                    <p class="product5-desc">מאפה חמאתי עטוף סביב שוקולד מריר עשיר. אהוב לארוחת בוקר.</p>
-                    <span class="price product5-price">₪19</span>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">🍓</div>
-                <div class="product-info">
-                    <h3 class="product6-name">טארט פירות</h3>
-                    <p class="product6-desc">פירות עונתיים טריים מסודרים על קרם פטיסייר משיי בקליפת טארט פריכה.</p>
-                    <span class="price product6-price">₪34</span>
+            
+            <!-- Component 3 -->
+            <div class="product-component">
+                <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/sadna.jpg" alt="Workshops">
+                <div class="product-description product3-desc">
+                    סדנאות ושיתופי פעולה
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title about-title">הסיפור שלנו</h2>
-            <div class="about-content">
-                <p class="about-p1">
-                    רוני פרולינג, שף הקונדיטוריה שלנו שהוכשרה בפריז, מביאה אליכם מסורת אפייה צרפתית אותנטית. 
-                    אנחנו משתמשים רק במרכיבים המובחרים ביותר כדי ליצור מאפים שמעבירים אתכם לרחובות צרפת עם כל ביס.
-                </p>
-                <p class="about-p2" style="margin-top: 1.5rem;">
-                    אנחנו קמים בשעה 4 בבוקר כל יום כדי להבטיח שהמאפים שלנו טריים מהתנור כשאתם מגיעים. 
-                    מהקרואסונים המיוחדים שלנו ועד למקרונים העדינים, כל יצירה נעשית באהבה, דיוק והמרכיבים המשובחים ביותר.
-                </p>
+    <section class="gallery-section" id="gallery">
+        <h2 class="gallery-title gallery-title-text">הגלריה שלנו</h2>
+        <div class="gallery-container">
+            <button class="gallery-nav prev" onclick="scrollGallery(-1)">‹</button>
+            <div class="gallery-slider" id="gallerySlider">
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/krokumbush.jpg" alt="Croquembouche">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/krokumbush2.jpg" alt="Croquembouche 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/krokumbush3.jpg" alt="Croquembouche 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/sadna.jpg" alt="Workshop">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/sadna2.jpg" alt="Workshop 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/sadna3.jpg" alt="Workshop 3">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/saint-honore.jpg" alt="Saint Honoré">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/2saint-honore.jpg" alt="Saint Honoré 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/roni.jpg" alt="Roni">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/roni-working.jpg" alt="Roni Working">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/at-jeffrys.jpg" alt="At Jeffrey's">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/pavlova.jpg" alt="Pavlova">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/desert-deck.jpg" alt="Dessert Deck">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.images/desert-deck2.jpg" alt="Dessert Deck 2">
+                </div>
             </div>
+            <button class="gallery-nav next" onclick="scrollGallery(1)">›</button>
         </div>
     </section>
 
     <footer id="contact">
+        <div class="footer-social">
+            <a href="https://www.instagram.com/fruhling.bakery?igsh=eGxzeXBjZW03dndv&utm_source=qr" target="_blank" class="instagram-icon" title="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@ronifruhling_?_t=ZS-8yNeMXh4Jmi&_r=1" target="_blank" class="tiktok-icon" title="TikTok">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z"/>
+                </svg>
+            </a>
+            <a href="https://wa.me/972543260188" target="_blank" class="whatsapp-icon" title="WhatsApp">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+                </svg>
+            </a>
+        </div>
+
         <h3 class="footer-title">בואו לבקר אותנו היום</h3>
         <div class="contact-info">
             <p class="footer-location">📍 אבן יהודה, ישראל</p>
             <p class="footer-phone">📞 054-326-0188</p>
-            <p class="footer-chef">👩‍🍳 שף קונדיטוריה: רוני פרולינג</p>
-            <p class="footer-hours" style="margin-top: 1rem;">פתוח מדי יום: 07:00 - 19:00</p>
+            <p class="footer-chef">👩‍🍳 שף קונדיטור: רוני פרילינג</p>
+            <p class="footer-hours" style="margin-top: 1rem;">זמני איסוף מהמקום: 07:00 - 19:00</p>
         </div>
         <p class="footer-copyright" style="margin-top: 2rem; opacity: 0.8;">&copy; 2024 Fruhling Bakery. כל הזכויות שמורות.</p>
     </footer>
@@ -505,80 +663,50 @@
     <script>
         const translations = {
             he: {
-                'nav-home': 'בית',
-                'nav-products': 'מוצרים',
                 'nav-about': 'אודות',
+                'nav-gallery': 'גלריה',
                 'nav-contact': 'צור קשר',
-                'hero-title': 'ברוכים הבאים למאפיית פרולינג',
-                'hero-subtitle': 'מאפים צרפתיים אותנטיים מיום ליום',
-                'hero-btn': 'גלו את המאפים שלנו',
-                'products-title': 'היצירות המיוחדות שלנו',
-                'product1-name': 'קרואסונים',
-                'product1-desc': 'שכבות חמאתיות ופריכות של שלמות. הקרואסונים המיוחדים שלנו מיוצרים עם חמאה צרפתית מובחרת.',
-                'product1-price': '₪18',
-                'product2-name': 'מילפיי',
-                'product2-desc': 'בצק עלים עדין בשכבות עם קרם וניל ומכוסה בציפוי פונדנט.',
-                'product2-price': '₪26',
-                'product3-name': 'מקרונים',
-                'product3-desc': 'עוגיות מרנג שקדים קלילות וצבעוניות עם מילויי גנאש חלקים. זמין ב-8 טעמים.',
-                'product3-price': '₪10 ליחידה',
-                'product4-name': 'קרם ברולה',
-                'product4-desc': 'קרם צרפתי קלאסי עם קרום סוכר מקורמל שמתפצפץ בכל כפית.',
-                'product4-price': '₪28',
-                'product5-name': 'פאן או שוקולה',
-                'product5-desc': 'מאפה חמאתי עטוף סביב שוקולד מריר עשיר. אהוב לארוחת בוקר.',
-                'product5-price': '₪19',
-                'product6-name': 'טארט פירות',
-                'product6-desc': 'פירות עונתיים טריים מסודרים על קרם פטיסייר משיי בקליפת טארט פריכה.',
-                'product6-price': '₪34',
+                'footer-nav-about': 'אודות',
+                'footer-nav-contact': 'צור קשר',
                 'about-title': 'הסיפור שלנו',
-                'about-p1': 'רוני פרולינג, שף הקונדיטוריה שלנו שהוכשרה בפריז, מביאה אליכם מסורת אפייה צרפתית אותנטית. אנחנו משתמשים רק במרכיבים המובחרים ביותר כדי ליצור מאפים שמעבירים אתכם לרחובות צרפת עם כל ביס.',
-                'about-p2': 'אנחנו קמים בשעה 4 בבוקר כל יום כדי להבטיח שהמאפים שלנו טריים מהתנור כשאתם מגיעים. מהקרואסונים המיוחדים שלנו ועד למקרונים העדינים, כל יצירה נעשית באהבה, דיוק והמרכיבים המשובחים ביותר.',
+                'about-p1': 'קצת על עצמי :)',
+                'about-p2': 'נעים מאוד שמי רוני פרילינג, קונדיטורית מאבן יהודה. לאחר שסיימתי בהצטיינות לימודי קונדיטוריה בבית הספר "בישולים". המשכתי לסטאז׳ בפריז אצל השף קונדיטור ג׳פרי קנייה המוכשר!',
+                'about-p3': 'הקמתי את העסק FRUHLING.BAKERY המתמקד ב: קינוחי מסעדות וברי יין, קינוחי "ואוו" לאירועים פרטיים, שיתופי פעולה ופרוייקטים קולינריים.',
+                'about-p4': 'שמחה לקחת חלק באירועים מושקעים, לממש את הידע שצברתי ואת הטכניקות שלמדתי באהבה רבה...',
+                'section-title': 'המוצרים שלנו',
+                'product1-desc': 'שולחן קינוחי הוואו שלי',
+                'product2-desc': 'פיתוח קינוחי מסעדות וברי יין',
+                'product3-desc': 'סדנאות ושיתופי פעולה',
+                'gallery-title-text': 'הגלריה שלנו',
                 'footer-title': 'בואו לבקר אותנו היום',
                 'footer-location': '📍 אבן יהודה, ישראל',
                 'footer-phone': '📞 054-326-0188',
-                'footer-chef': '👩‍🍳 שף קונדיטוריה: רוני פרולינג',
-                'footer-hours': 'פתוח מדי יום: 07:00 - 19:00',
-                'footer-copyright': '© 2024 Fruhling Bakery. כל הזכויות שמורות.',
-                'lang-button': 'עברית'
+                'footer-chef': '👩‍🍳 שף קונדיטור: רוני פרילינג',
+                'footer-hours': 'זמני איסוף מהמקום: 07:00 - 19:00',
+                'footer-copyright': '© 2024 Fruhling Bakery. כל הזכויות שמורות.'
             },
             en: {
-                'nav-home': 'Home',
-                'nav-products': 'Products',
                 'nav-about': 'About',
+                'nav-gallery': 'Gallery',
                 'nav-contact': 'Contact',
-                'hero-title': 'Welcome to Fruhling Bakery',
-                'hero-subtitle': 'Artisan French Pastries Made Fresh Daily',
-                'hero-btn': 'Explore Our Pastries',
-                'products-title': 'Our Signature Creations',
-                'product1-name': 'Croissants',
-                'product1-desc': 'Buttery, flaky layers of perfection. Our signature croissants are made with premium French butter.',
-                'product1-price': '$4.50',
-                'product2-name': 'Mille-Feuille',
-                'product2-desc': 'Delicate puff pastry layered with vanilla custard and topped with fondant icing.',
-                'product2-price': '$6.50',
-                'product3-name': 'Macarons',
-                'product3-desc': 'Light, colorful almond meringue cookies with smooth ganache fillings. Available in 8 flavors.',
-                'product3-price': '$2.50 each',
-                'product4-name': 'Crème Brûlée',
-                'product4-desc': 'Classic French custard with a caramelized sugar crust that crackles with every spoonful.',
-                'product4-price': '$7.00',
-                'product5-name': 'Pain au Chocolat',
-                'product5-desc': 'Buttery pastry wrapped around rich dark chocolate. A breakfast favorite.',
-                'product5-price': '$4.75',
-                'product6-name': 'Fruit Tart',
-                'product6-desc': 'Fresh seasonal fruits arranged on silky pastry cream in a crisp tart shell.',
-                'product6-price': '$8.50',
+                'footer-nav-about': 'About',
+                'footer-nav-contact': 'Contact',
                 'about-title': 'Our Story',
-                'about-p1': 'Roni Fruhling, our master pastry chef trained in Paris, brings authentic French baking traditions to you. We use only the finest ingredients to create pastries that transport you to the streets of France with every bite.',
-                'about-p2': 'We wake up at 4 AM every day to ensure our pastries are fresh from the oven when you arrive. From our signature croissants to delicate macarons, every creation is made with love, precision, and the finest ingredients available.',
+                'about-p1': 'A bit about myself :)',
+                'about-p2': 'Nice to meet you, my name is Roni Friling, a pastry chef from Even Yehuda. After graduating with honors from the "Bishulim" culinary school, I continued to an internship in Paris with the talented pastry chef Jeffrey Cagnes!',
+                'about-p3': 'I founded FRUHLING.BAKERY which focuses on: restaurant and wine bar desserts, "WOW" desserts for private events, collaborations and culinary projects.',
+                'about-p4': 'I am happy to take part in special events, to realize the knowledge I have gained and the techniques I learned with great love...',
+                'section-title': 'Our Products',
+                'product1-desc': 'My WOW Dessert Table',
+                'product2-desc': 'Restaurant & Wine Bar Dessert Development',
+                'product3-desc': 'Workshops & Collaborations',
+                'gallery-title-text': 'Our Gallery',
                 'footer-title': 'Visit Us Today',
                 'footer-location': '📍 Even Yehuda, Israel',
                 'footer-phone': '📞 054-326-0188',
-                'footer-chef': '👩‍🍳 Pastry Chef: Roni Fruhling',
-                'footer-hours': 'Open Daily: 7:00 AM - 7:00 PM',
-                'footer-copyright': '© 2024 Fruhling Bakery. All rights reserved.',
-                'lang-button': 'עברית'
+                'footer-chef': '👩‍🍳 Pastry Chef: Roni Friling',
+                'footer-hours': 'Pickup Times: 7:00 AM - 7:00 PM',
+                'footer-copyright': '© 2024 Fruhling Bakery. All rights reserved.'
             }
         };
 
@@ -592,22 +720,34 @@
             document.documentElement.dir = currentLang === 'he' ? 'rtl' : 'ltr';
             document.body.classList.toggle('ltr', currentLang === 'en');
 
-            // Update the language button to show the OTHER language
             const buttonText = currentLang === 'he' ? 'English' : 'עברית';
             document.querySelector('.lang-switcher').textContent = buttonText;
 
             for (const [key, value] of Object.entries(lang)) {
                 const elements = document.querySelectorAll('.' + key);
                 elements.forEach(el => {
-                    if (el.classList.contains('price')) {
+                    if (el.tagName === 'P' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3') {
                         el.textContent = value;
-                    } else if (el.tagName === 'P' || el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3') {
-                        el.textContent = value;
+                        // Re-apply inline styles for specific paragraphs
+                        if (el.classList.contains('about-p3') || el.classList.contains('about-p4')) {
+                            el.style.marginTop = '1rem';
+                        }
                     } else if (el.tagName === 'A') {
+                        el.textContent = value;
+                    } else if (el.tagName === 'DIV' && el.classList.contains('product-description')) {
                         el.textContent = value;
                     }
                 });
             }
+        }
+
+        function scrollGallery(direction) {
+            const slider = document.getElementById('gallerySlider');
+            const scrollAmount = 370; // item width + gap
+            slider.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
         }
     </script>
 </body>

@@ -13,6 +13,7 @@
 #}
 
 # Main site configuration
+
 dev.fruhling-bakery.com {
     root * /var/www/html      # Path to your static site files
     file_server                   # Serve static files
