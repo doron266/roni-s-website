@@ -15,8 +15,7 @@
 # Main site configuration
 
 dev.fruhling-bakery.com {
-    root * /var/www/html      # Path to your static site files
-    file_server                   # Serve static files
+    reverse_proxy web:3000      # Path to your static site files
     encode gzip                   # Enable gzip compression for faster loading
     log {
         output file /var/log/caddy/mydomain_access.log {

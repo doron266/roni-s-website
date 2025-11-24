@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: cssDockerfile
+    networks:
+      - localnet
+    expose:
+      - "3000"  # Expose port internally to Caddy, not to host
+
+  caddy:
+    build:
+      context: .
+      dockerfile: CaddyDockerfile
+      args:
+        Caddyfile: testCaddyfile
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - localnet
+    volumes:
+      - caddy_data:/data
+    depends_on:
+      - web
+volumes:
+  caddy_data:
+networks:
+  localnet:
+    driver: bridge
+
