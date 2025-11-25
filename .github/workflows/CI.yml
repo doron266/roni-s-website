@@ -35,7 +35,7 @@ jobs:
           cd roni-s-website
           git pull
           docker-compose down
-          docker-compose up --build
+          docker-compose up -d --build
           "
     - name: my Tests
       run: |
