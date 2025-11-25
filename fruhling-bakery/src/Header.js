@@ -1,9 +1,43 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { LanguageContext } from './LanguageContext';
 
 export default function Header() {
   const { lang, toggle, t } = useContext(LanguageContext);
   const buttonText = lang === 'he' ? 'English' : 'עברית';
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const aboutItemRef = useRef(null);
+
+  const toggleAboutDropdown = () => setAboutDropdownOpen(open => !open);
+  const handleAboutHover = (isEntering) => setAboutDropdownOpen(isEntering);
+  const closeAboutDropdown = () => setAboutDropdownOpen(false);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (aboutDropdownOpen && aboutItemRef.current && !aboutItemRef.current.contains(event.target)) {
+        setAboutDropdownOpen(false);
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        closeAboutDropdown();
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [aboutDropdownOpen]);
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   return (
     <header>
       <nav>
@@ -19,9 +53,76 @@ export default function Header() {
           </a>
         </div>
         <ul className="nav-links">
-          <li><a onClick={() => document.getElementById('about').scrollIntoView({behavior:'smooth'})}>{t['nav-about']}</a></li>
-          <li><a onClick={() => document.getElementById('gallery').scrollIntoView({behavior:'smooth'})}>{t['nav-gallery']}</a></li>
-          <li><a onClick={() => document.getElementById('contact').scrollIntoView({behavior:'smooth'})}>{t['nav-contact']}</a></li>
+          <li
+            ref={aboutItemRef}
+            className="nav-item-with-dropdown"
+            onMouseEnter={() => handleAboutHover(true)}
+            onMouseLeave={() => handleAboutHover(false)}
+            onFocus={() => setAboutDropdownOpen(true)}
+            onBlur={closeAboutDropdown}
+          >
+            <div className="nav-primary">
+              <a
+                href="#about"
+                className="nav-label"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection('about');
+                }}
+              >
+                {t['nav-about']}
+              </a>
+              <button
+                type="button"
+                className={`dropdown-toggle ${aboutDropdownOpen ? 'open' : ''}`}
+                aria-expanded={aboutDropdownOpen}
+                aria-haspopup="true"
+                aria-label={`${t['nav-about']} options`}
+                onClick={toggleAboutDropdown}
+                onMouseEnter={() => handleAboutHover(true)}
+              >
+                +
+              </button>
+            </div>
+            <div
+              className={`dropdown-panel ${aboutDropdownOpen ? 'open' : ''}`}
+              onMouseEnter={() => handleAboutHover(true)}
+              onMouseLeave={() => handleAboutHover(false)}
+            >
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection('contact');
+                  closeAboutDropdown();
+                }}
+              >
+                {t['nav-order']}
+              </a>
+            </div>
+          </li>
+          <li>
+            <a
+              href="#gallery"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('gallery');
+              }}
+            >
+              {t['nav-gallery']}
+            </a>
+          </li>
+          <li>
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('contact');
+              }}
+            >
+              {t['nav-contact']}
+            </a>
+          </li>
           <li><button className="lang-switcher" onClick={toggle}>{buttonText}</button></li>
         </ul>
       </nav>
