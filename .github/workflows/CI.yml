@@ -2,8 +2,8 @@ name: Website CI
 # some changes: 1,
 on:
   
-  pull_request:
-    branches: [ main ]
+  push:
+    branches: [ dev ]
 
 env:
   AWS_REGION: eu-north-1                   # set this to your preferred AWS region, e.g. us-west-1
@@ -20,8 +20,8 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy
+  continous-integration:
+    name: setup environment
     runs-on: ubuntu-latest
 
     steps:
@@ -33,8 +33,9 @@ jobs:
         echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
         ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" "
           cd roni-s-website
-          docker build -t mycaddy:${{ env.PR_NUMBER }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
-          docker run -d -p 80:80 -p 443:443 -v caddy_data:/data mycaddy:${{ env.PR_NUMBER }}
+          git pull
+          docker-compose down
+          docker-compose up --build
           "
     - name: my Tests
       run: |
@@ -50,28 +51,33 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+    
+    - name: Set up Docker Compose
+      uses: docker/setup-compose-action@v1
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_NAME: dw/caddy
-        IMAGE_TAG: ${{ env.PR_NUMBER }}
+        IMAGE_WEB_NAME: dw/roni-s-website-web
+        IMAGE_CADDY_NAME: dw/roni-s-website-caddy
+        IMAGE_TAG: v1.0.${{ env.PR_NUMBER }}
 
       run: |
         # Build the image
-        docker build -t $IMAGE_NAME:$IMAGE_TAG -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile .
+        docker-compose build
 
         # Tag it for ECR
-        docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
-
+        docker tag $IMAGE_WEB_NAME:$IMAGE_TAG $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
+        docker tag $IMAGE_CADDY_NAME:$IMAGE_TAG $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
         # Push to ECR
-        docker push $ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
   post-tasks:
     name: Cleanup Dev Server
     runs-on: ubuntu-latest
-    needs: deploy             # 👈 depends on the previous job
-    if: always()              # 👈 runs even if deploy failed
+    needs: continous-integration             # 👈 depends on the previous job
+    if: never()              # 👈 runs even if deploy failed
     steps:
     - name: Build & Integrate
       run: |
