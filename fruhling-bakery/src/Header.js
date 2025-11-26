@@ -6,10 +6,36 @@ export default function Header() {
   const buttonText = lang === 'he' ? 'English' : 'עברית';
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const aboutItemRef = useRef(null);
+  const hoverTimeoutRef = useRef(null);
 
-  const toggleAboutDropdown = () => setAboutDropdownOpen(open => !open);
-  const handleAboutHover = (isEntering) => setAboutDropdownOpen(isEntering);
-  const closeAboutDropdown = () => setAboutDropdownOpen(false);
+  const clearHoverTimeout = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+  };
+
+  const openAboutDropdown = () => {
+    clearHoverTimeout();
+    setAboutDropdownOpen(true);
+  };
+
+  const scheduleCloseAboutDropdown = () => {
+    clearHoverTimeout();
+    hoverTimeoutRef.current = setTimeout(() => {
+      setAboutDropdownOpen(false);
+    }, 150);
+  };
+
+  const toggleAboutDropdown = () => {
+    clearHoverTimeout();
+    setAboutDropdownOpen(open => !open);
+  };
+
+  const closeAboutDropdown = () => {
+    clearHoverTimeout();
+    setAboutDropdownOpen(false);
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -29,6 +55,7 @@ export default function Header() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
+      clearHoverTimeout();
     };
   }, [aboutDropdownOpen]);
 
@@ -56,38 +83,27 @@ export default function Header() {
           <li
             ref={aboutItemRef}
             className="nav-item-with-dropdown"
-            onMouseEnter={() => handleAboutHover(true)}
-            onMouseLeave={() => handleAboutHover(false)}
-            onFocus={() => setAboutDropdownOpen(true)}
+            onMouseEnter={openAboutDropdown}
+            onMouseLeave={scheduleCloseAboutDropdown}
+            onFocus={openAboutDropdown}
             onBlur={closeAboutDropdown}
           >
-            <div className="nav-primary">
-              <a
-                href="#about"
-                className="nav-label"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection('about');
-                }}
-              >
-                {t['nav-about']}
-              </a>
-              <button
-                type="button"
-                className={`dropdown-toggle ${aboutDropdownOpen ? 'open' : ''}`}
-                aria-expanded={aboutDropdownOpen}
-                aria-haspopup="true"
-                aria-label={`${t['nav-about']} options`}
-                onClick={toggleAboutDropdown}
-                onMouseEnter={() => handleAboutHover(true)}
-              >
-                +
-              </button>
-            </div>
+            <button
+              type="button"
+              className={`dropdown-toggle ${aboutDropdownOpen ? 'open' : ''}`}
+              aria-expanded={aboutDropdownOpen}
+              aria-haspopup="true"
+              aria-label={`${t['nav-about']} options`}
+              onClick={toggleAboutDropdown}
+              onMouseEnter={openAboutDropdown}
+              onMouseLeave={scheduleCloseAboutDropdown}
+            >
+              +
+            </button>
             <div
               className={`dropdown-panel ${aboutDropdownOpen ? 'open' : ''}`}
-              onMouseEnter={() => handleAboutHover(true)}
-              onMouseLeave={() => handleAboutHover(false)}
+              onMouseEnter={openAboutDropdown}
+              onMouseLeave={scheduleCloseAboutDropdown}
             >
               <a
                 href="#contact"
@@ -100,6 +116,18 @@ export default function Header() {
                 {t['nav-order']}
               </a>
             </div>
+          </li>
+          <li>
+            <a
+              href="#about"
+              className="nav-label nav-button"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('about');
+              }}
+            >
+              {t['nav-about']}
+            </a>
           </li>
           <li>
             <a
