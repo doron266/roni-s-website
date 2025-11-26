@@ -82,6 +82,8 @@ footer { background: linear-gradient(135deg, #ffc4e1 0%, #ffb3d9 100%); color:wh
 .order-page__details { background: linear-gradient(135deg, #fff0f7 0%, #ffe6f0 100%); border-radius: 12px; padding: 1.5rem; text-align: left; border: 1px solid #ffd6e9; }
 .order-page__details h2 { margin-bottom: 0.75rem; color: #c1327d; font-size: 1.25rem; }
 .order-page__details ul { padding-left: 1.25rem; color: #5b3a4f; display: grid; gap: 0.5rem; }
+.order-page[dir="rtl"] .order-page__details { text-align: right; }
+.order-page[dir="rtl"] .order-page__details ul { padding-left: 0; padding-right: 1.25rem; }
 .order-page__note { margin-top: 1.75rem; background: #fff8fc; border: 1px dashed #e05098; padding: 1rem 1.25rem; border-radius: 10px; color: #7a4565; font-weight: 600; }
 
 @media (max-width:968px) {
