@@ -116,7 +116,7 @@ jobs:
    
     - name: continuos delivery
       run: |
-        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${PROD_HOSTNAME}" "
+        ssh -i private_key "${USER_NAME}@${PROD_HOSTNAME}" "
           docker stop \$(docker ps -q) || true &&
           docker pull $ECR_REGISTRY/$IMAGE_WEB_NAME:latest &&  docker pull $ECR_REGISTRY/$IMAGE_caddy_NAME:latest
           docker compose -f production-dcoker-compose.yml up -d 
