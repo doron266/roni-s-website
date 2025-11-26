@@ -122,7 +122,7 @@ jobs:
           git pull
           docker stop \$(docker ps -q) || true &&
           docker pull $ECR_REGISTRY/$IMAGE_WEB_NAME:latest &&  docker pull $ECR_REGISTRY/$IMAGE_caddy_NAME:latest
-          docker-compose -f production-dcoker-compose.yml -d up
+          docker-compose -f production-docker-compose.yml up -d
           "
 
         
