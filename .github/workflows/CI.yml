@@ -79,7 +79,7 @@ jobs:
 
       run: |
         # Build the image
-        docker-compose build
+        docker compose build
 
         # Tag it for ECR
         docker tag $IMAGE_WEB_NAME:$IMAGE_TAG $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
