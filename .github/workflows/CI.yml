@@ -10,7 +10,7 @@ env:
   ECR_REPOSITORY: 685631290880.dkr.ecr.eu-north-1.amazonaws.com/dw/caddy  # set this to your Amazon ECR repository name
   # CONTAINER_NAME: MY_CONTAINER_NAME           set this to the name of the container in the
                                                # containerDefinitions section of your task definition
-  PR_NUMBER: ${{ github.event.number }}
+  PR_NUMBER: ${{ github.run_number }}
   PRIVATE_KEY: ${{ secrets.PASS_KEY_VALUE }}
   HOSTNAME: ${{secrets.DEV_IP}}
   PROD_HOSTNAME: ${{secrets.PROD_IP}}
@@ -73,17 +73,17 @@ jobs:
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_WEB_NAME: dw/roni-s-website-web
-        IMAGE_CADDY_NAME: dw/roni-s-website-caddy
-        IMAGE_TAG: v1.0.${{ env.PR_NUMBER }}
+        IMAGE_WEB_NAME: roni-s-website-web
+        IMAGE_CADDY_NAME: roni-s-website-caddy
+        IMAGE_TAG: "v1.0.${env.PR_NUMBER}"
 
       run: |
         # Build the image
         docker compose build
 
         # Tag it for ECR
-        docker tag $IMAGE_WEB_NAME:$IMAGE_TAG $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
-        docker tag $IMAGE_CADDY_NAME:$IMAGE_TAG $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
+        docker tag $IMAGE_WEB_NAME:latest $ECR_REGISTRY/dw/$IMAGE_WEB_NAME:$IMAGE_TAG
+        docker tag $IMAGE_CADDY_NAME:latest $ECR_REGISTRY/dw/$IMAGE_CADDY_NAME:$IMAGE_TAG
         # Push to ECR
         docker push $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
         docker push $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
