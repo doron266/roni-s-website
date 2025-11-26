@@ -75,7 +75,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_WEB_NAME: roni-s-website-web
         IMAGE_CADDY_NAME: roni-s-website-caddy
-        IMAGE_TAG: "v1.0.${env.PR_NUMBER}"
+        IMAGE_TAG: v1.0.${{ env.PR_NUMBER }}
 
       run: |
         # Build the image
