@@ -20,7 +20,21 @@
       service:
         name: docker
         state: started
-        enabled: yes
+        enabled: yes 
+        
+    - name: Execute a command and register its output
+      ansible.builtin.shell: docker compose || docker-compose
+      register: compose-exist
+      ignore_errors: true
+        
+    - name: Download Docker Compose binary
+      ansible.builtin.get_url:
+        url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}"
+        dest: /usr/local/bin/docker-compose
+        mode: '0755' # Make the binary executable
+      vars:
+        docker_compose_version: "2.40.3" # Specify your desired Docker Compose version
+      when: compose-exist != 0
 
     - name: Configure AWS CLI using GitHub Secrets
       become: yes
