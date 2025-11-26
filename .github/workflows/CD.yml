@@ -97,8 +97,8 @@ jobs:
         docker tag $IMAGE_WEB_NAME:latest $ECR_REGISTRY/$IMAGE_WEB_NAME:latest
         docker tag $IMAGE_CADDY_NAME:latest $ECR_REGISTRY/$IMAGE_CADDY_NAME:latest
         # Push to ECR
-        docker push $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
-        docker push $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$IMAGE_WEB_NAME:latest
+        docker push $ECR_REGISTRY/$IMAGE_CADDY_NAME:latest
         
     - name: Add SSH key
       run: |
