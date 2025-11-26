@@ -63,6 +63,8 @@ jobs:
     
     - name: Set up Docker Compose
       uses: docker/setup-compose-action@v1
+      with:
+        version: 'v2.40.3'
 
     - name: debugging docker compose installation
       run: |
