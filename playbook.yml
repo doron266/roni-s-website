@@ -24,7 +24,7 @@
         
     - name: Execute a command and register its output
       ansible.builtin.shell: docker compose || docker-compose
-      register: compose-exist
+      register: compose_exist
       ignore_errors: true
         
     - name: Download Docker Compose binary
