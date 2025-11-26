@@ -37,6 +37,15 @@ jobs:
           docker-compose down
           docker-compose up -d --build
           "
+    - name: Debug Connectivity
+      run: |
+        echo "--- DNS ---"
+        dig dev.fruhling-bakery.com
+        echo "--- HTTP ---"
+        curl -v http://dev.fruhling-bakery.com || true
+        echo "--- HTTPS ---"
+        curl -v https://dev.fruhling-bakery.com || true
+
     - name: my Tests
       run: |
         curl -Lv dev.fruhling-bakery.com
