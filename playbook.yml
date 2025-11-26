@@ -34,7 +34,7 @@
         mode: '0755' # Make the binary executable
       vars:
         docker_compose_version: "2.40.3" # Specify your desired Docker Compose version
-      when: compose-exist != 0
+      when: compose_exist != 0
 
     - name: Configure AWS CLI using GitHub Secrets
       become: yes
