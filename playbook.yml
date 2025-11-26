@@ -28,12 +28,9 @@
       ignore_errors: true
         
     - name: Download Docker Compose binary
-      ansible.builtin.get_url:
-        url: "https://github.com/docker/compose/releases/tag/{{ docker_compose_version }}/docker-compose-linux-x86_64"
-        dest: /usr/local/bin/docker-compose
-        mode: '0755' # Make the binary executable
-      vars:
-        docker_compose_version: "v2.40.3" # Specify your desired Docker Compose version
+      ansible.builtin.shell: | 
+        sudo curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
       when: compose_exist != 0
 
     - name: Configure AWS CLI using GitHub Secrets
