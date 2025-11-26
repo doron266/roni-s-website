@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LanguageContext } from './LanguageContext';
 
 export default function Header() {
   const { lang, toggle, t } = useContext(LanguageContext);
   const buttonText = lang === 'he' ? 'English' : 'עברית';
+  const navigate = useNavigate();
+  const location = useLocation();
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const aboutItemRef = useRef(null);
   const hoverTimeoutRef = useRef(null);
@@ -65,6 +68,32 @@ export default function Header() {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  const handleSectionNav = (sectionId) => (event) => {
+    event.preventDefault();
+    const navigateHome = location.pathname !== '/';
+
+    const executeScroll = () => {
+      if (sectionId) {
+        scrollToSection(sectionId);
+      }
+    };
+
+    if (navigateHome) {
+      navigate('/', { replace: false });
+      setTimeout(executeScroll, 200);
+    } else {
+      executeScroll();
+    }
+  };
+
+  const goToOrderPage = (event) => {
+    event.preventDefault();
+    closeAboutDropdown();
+    if (location.pathname !== '/order') {
+      navigate('/order');
+    }
+  };
   return (
     <header>
       <nav>
@@ -106,12 +135,8 @@ export default function Header() {
               onMouseLeave={scheduleCloseAboutDropdown}
             >
               <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection('contact');
-                  closeAboutDropdown();
-                }}
+                href="/order"
+                onClick={goToOrderPage}
               >
                 {t['nav-order']}
               </a>
@@ -132,10 +157,7 @@ export default function Header() {
           <li>
             <a
               href="#gallery"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('gallery');
-              }}
+              onClick={handleSectionNav('gallery')}
             >
               {t['nav-gallery']}
             </a>
@@ -143,10 +165,7 @@ export default function Header() {
           <li>
             <a
               href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                scrollToSection('contact');
-              }}
+              onClick={handleSectionNav('contact')}
             >
               {t['nav-contact']}
             </a>
