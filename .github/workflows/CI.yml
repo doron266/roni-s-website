@@ -67,9 +67,7 @@ jobs:
         version: 'v2.40.3'
 
     - name: debugging docker compose installation
-      run: |
-        which docker-compose
-        dcoker-compose
+      run: dcoker compose
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
