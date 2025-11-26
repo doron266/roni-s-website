@@ -29,7 +29,7 @@
         
     - name: Download Docker Compose binary
       ansible.builtin.get_url:
-        url: "https://github.com/docker/compose/releases/tag/${{ docker_compose_version }}/docker-compose-linux-x86_64"
+        url: "https://github.com/docker/compose/releases/tag/{{ docker_compose_version }}/docker-compose-linux-x86_64"
         dest: /usr/local/bin/docker-compose
         mode: '0755' # Make the binary executable
       vars:
