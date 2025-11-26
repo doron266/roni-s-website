@@ -15,8 +15,9 @@
 # Main site configuration
 
 dev.fruhling-bakery.com {
-    reverse_proxy web:3000      # Path to your static site files
+    try_files {path} /index.html
     encode gzip                   # Enable gzip compression for faster loading
+    reverse_proxy web:3000      # Path to your static site files
     log {
         output file /var/log/caddy/mydomain_access.log {
             roll_size 10mb
