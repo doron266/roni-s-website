@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  web:
+    image: 685631290880.dkr.ecr.eu-north-1.amazonaws.com/dw/roni-s-website-web:latest
+    networks:
+      - localnet
+    expose:
+      - "3000"  # Expose port internally to Caddy, not to host
+
+  caddy:
+    image: 685631290880.dkr.ecr.eu-north-1.amazonaws.com/dw/roni-s-website-caddy:latest
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - localnet
+    volumes:
+      - caddy_data:/data
+    depends_on:
+      - web
+volumes:
+  caddy_data:
+networks:
+  localnet:
+    driver: bridge

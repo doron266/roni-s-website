@@ -12,7 +12,7 @@ env:
   ECR_REPOSITORY: 685631290880.dkr.ecr.eu-north-1.amazonaws.com/dw/caddy  # set this to your Amazon ECR repository name
   # CONTAINER_NAME: MY_CONTAINER_NAME           set this to the name of the container in the
                                                # containerDefinitions section of your task definition
-  PR_NUMBER: ${{ github.event.number }}
+  RUN_NUMBER: ${{ github.run_number }}
   SSH_KEY: ${{ secrets.PASS_KEY_VALUE }}
   HOSTNAME: ${{secrets.DEV_IP}}
   PROD_HOSTNAME: ${{secrets.PROD_IP}}
@@ -38,16 +38,25 @@ jobs:
       run: |
         TAG="merge-$(date +'%Y%m%d-%H%M%S')"
         echo "TAG=$TAG" >> $GITHUB_ENV
-
-
+        
     - name: Build & Integrate
       run: |
-        echo "$SSH_KEY" > ssh_key && chmod 600 ssh_key
-        ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${HOSTNAME}" "
+        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+        ssh -o StrictHostKeyChecking=no -i private_key "${USER_NAME}@${HOSTNAME}" "
           cd roni-s-website
-          docker build -t mycaddy:${{ env.TAG }} -f CaddyDockerfile --build-arg Caddyfile=testCaddyfile . &&
-          docker run -d -p 80:80 -p 443:443 -v caddy_data:/data mycaddy:${{ env.TAG }}
+          git pull
+          docker-compose down
+          docker-compose up -d --build
           "
+    - name: Debug Connectivity
+      run: |
+        echo "--- DNS ---"
+        dig dev.fruhling-bakery.com
+        echo "--- HTTP ---"
+        curl -v http://dev.fruhling-bakery.com || true
+        echo "--- HTTPS ---"
+        curl -v https://dev.fruhling-bakery.com || true
+
     - name: my Tests
       run: |
         curl -Lv dev.fruhling-bakery.com
@@ -62,24 +71,35 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+    
+    - name: Set up Docker Compose
+      uses: docker/setup-compose-action@v1
+      with:
+        version: 'v2.40.3'
+
+    - name: debugging docker compose installation
+      run: docker compose
 
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_NAME: dw/caddy
-        IMAGE_TAG: ${{ env.PR_NUMBER }}
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}/dw
+        IMAGE_WEB_NAME: roni-s-website-web
+        IMAGE_CADDY_NAME: roni-s-website-caddy
+        IMAGE_TAG: v1.0.${{ env.RUN_NUMBER }}-${{ env.TAG}}
 
       run: |
         # Build the image
-        docker build -t $IMAGE_NAME:latest -f CaddyDockerfile --build-arg Caddyfile=Caddyfile .
+        docker compose build
+        docker build -t $IMAGE_CADDY_NAME:latest -f CaddyDockerfile --build-arg Caddyfile=Caddyfile .
 
         # Tag it for ECR
-        docker tag $IMAGE_NAME:latest $ECR_REGISTRY/$IMAGE_NAME:latest
-
+        docker tag $IMAGE_WEB_NAME:latest $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
+        docker tag $IMAGE_CADDY_NAME:latest $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
         # Push to ECR
-        docker push $ECR_REGISTRY/$IMAGE_NAME:latest
-
+        docker push $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
+        
     - name: Add SSH key
       run: |
           mkdir -p ~/.ssh
@@ -98,8 +118,8 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -i ssh_key "${USER_NAME}@${PROD_HOSTNAME}" "
           docker stop \$(docker ps -q) || true &&
-          docker pull ${{ env.ECR_REPOSITORY }}:latest &&
-          docker run -d -p 80:80 -p 443:443 -v caddy_data:/data ${{ env.ECR_REPOSITORY }}:latest
+          docker pull $ECR_REGISTRY/$IMAGE_WEB_NAME:latest &&  docker pull $ECR_REGISTRY/$IMAGE_caddy_NAME:latest
+          docker compose -f production-dcoker-compose.yml up -d 
           "
 
         

@@ -1,0 +1,76 @@
+import React, { createContext, useState } from 'react';
+
+export const LanguageContext = createContext();
+
+const translations = {
+  he: {
+    'nav-about': 'אודות',
+    'nav-gallery': 'גלריה',
+    'nav-contact': 'צור קשר',
+    'nav-order': 'הזמנה',
+    'order-page-eyebrow': 'הזמנה אונליין',
+    'order-page-title': 'בקרוב: קטלוג הזמנות חדש',
+    'order-page-lead': 'דואגים לסיים את החוויה הדיגיטלית ולחבר אתכם למבחר הקינוחים שלי בעמוד ייעודי.',
+    'order-page-what-to-expect': 'מה צפוי להופיע כאן?',
+    'order-page-list-1': 'מבחר הקינוחים והקינוחים המיוחדים להוספה לסל.',
+    'order-page-list-2': 'פרטים ברורים לגבי זמני איסוף והזמנות מיוחדות.',
+    'order-page-list-3': 'דרך נוחה להשאיר פרטים לקבלת הצעת מחיר מותאמת.',
+    'order-page-note': 'העמוד בבנייה — אם אתם רוצים להקדים ולתאם הזמנה, צרו קשר בווטסאפ או בטלפון ונחזור אליכם בהקדם.',
+    'about-title': 'הסיפור שלנו',
+    'about-p1': 'קצת על עצמי :)',
+    'about-p2': 'נעים מאוד שמי רוני פרילינג, קונדיטורית מאבן יהודה. לאחר שסיימתי בהצטיינות לימודי קונדיטוריה בבית הספר "בישולים". המשכתי לסטאז׳ בפריז אצל השף קונדיטור ג׳פרי קנייה המוכשר!',
+    'about-p3': 'הקמתי את העסק FRUHLING.BAKERY המתמקד ב: קינוחי מסעדות וברי יין, קינוחי "ואוו" לאירועים פרטיים, שיתופי פעולה ופרוייקטים קולינריים.',
+    'about-p4': 'שמחה לקחת חלק באירועים מושקעים, לממש את הידע שצברתי ואת הטכניקות שלמדתי באהבה רבה...',
+    'section-title': 'המוצרים שלנו',
+    'product1-desc': 'שולחן קינוחי הוואו שלי',
+    'product2-desc': 'פיתוח קינוחי מסעדות וברי יין',
+    'product3-desc': 'סדנאות ושיתופי פעולה',
+    'gallery-title-text': 'הגלריה שלנו',
+    'footer-title': 'בואו לבקר אותנו היום',
+    'footer-location': '📍 אבן יהודה, ישראל',
+    'footer-phone': '📞 054-326-0188',
+    'footer-chef': '👩‍🍳 שף קונדיטור: רוני פרילינג',
+    'footer-hours': 'זמני איסוף מהמקום: 07:00 - 19:00',
+    'footer-copyright': '© 2024 Fruhling Bakery. כל הזכויות שמורות.'
+  },
+  en: {
+    'nav-about': 'About',
+    'nav-gallery': 'Gallery',
+    'nav-contact': 'Contact',
+    'nav-order': 'Order',
+    'order-page-eyebrow': 'Order Online',
+    'order-page-title': 'Coming Soon: A Fresh Order Catalog',
+    'order-page-lead': 'We are finishing the digital experience to showcase and order Roni’s creations from a dedicated page.',
+    'order-page-what-to-expect': 'What you will find here:',
+    'order-page-list-1': 'A curated menu of signatures and seasonal desserts ready to add to your cart.',
+    'order-page-list-2': 'Clear pickup timings and guidance for custom requests.',
+    'order-page-list-3': 'An easy way to share details so we can craft a tailored quote.',
+    'order-page-note': 'This page is under construction—reach out on WhatsApp or by phone if you would like to place an order now.',
+    'about-title': 'Our Story',
+    'about-p1': 'A bit about myself :)',
+    'about-p2': 'Nice to meet you, my name is Roni Friling, a pastry chef from Even Yehuda. After graduating with honors from the "Bishulim" culinary school, I continued to an internship in Paris with the talented pastry chef Jeffrey Cagnes!',
+    'about-p3': 'I founded FRUHLING.BAKERY which focuses on: restaurant and wine bar desserts, "WOW" desserts for private events, collaborations and culinary projects.',
+    'about-p4': 'I am happy to take part in special events, to realize the knowledge I have gained and the techniques I learned with great love...',
+    'section-title': 'Our Products',
+    'product1-desc': 'My WOW Dessert Table',
+    'product2-desc': 'Restaurant & Wine Bar Dessert Development',
+    'product3-desc': 'Workshops & Collaborations',
+    'gallery-title-text': 'Our Gallery',
+    'footer-title': 'Visit Us Today',
+    'footer-location': '📍 Even Yehuda, Israel',
+    'footer-phone': '📞 054-326-0188',
+    'footer-chef': '👩‍🍳 Pastry Chef: Roni Friling',
+    'footer-hours': 'Pickup Times: 7:00 AM - 7:00 PM',
+    'footer-copyright': '© 2024 Fruhling Bakery. All rights reserved.'
+  }
+};
+
+export function LanguageProvider({ children }) {
+  const [lang, setLang] = useState('he');
+  const toggle = () => setLang(l => l === 'he' ? 'en' : 'he');
+  return (
+    <LanguageContext.Provider value={{ lang, toggle, t: translations[lang] }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
