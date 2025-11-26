@@ -91,6 +91,7 @@ jobs:
       run: |
         # Build the image
         docker compose build
+        docker build -t $IMAGE_CADDY_NAME:latest -f CaddyDockerfile --build-arg Caddyfile=Caddyfile .
 
         # Tag it for ECR
         docker tag $IMAGE_WEB_NAME:latest $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
