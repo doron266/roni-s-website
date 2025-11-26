@@ -64,6 +64,11 @@ jobs:
     - name: Set up Docker Compose
       uses: docker/setup-compose-action@v1
 
+    - name: debugging docker compose installation
+      run: |
+        which docker-compose
+        dcoker-compose
+
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
