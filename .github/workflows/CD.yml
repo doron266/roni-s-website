@@ -103,7 +103,7 @@ jobs:
     - name: Add SSH key
       run: |
           mkdir -p ~/.ssh
-          echo "${{ env.SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ env.PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H "${{ env.PROD_HOSTNAME }}" >> ~/.ssh/known_hosts
 
