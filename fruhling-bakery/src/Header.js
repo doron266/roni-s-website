@@ -145,7 +145,11 @@ export default function Header() {
           <li>
             <a
               href="#about"
-              onClick={handleSectionNav('about')}
+              className="nav-label nav-button"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('about');
+              }}
             >
               {t['nav-about']}
             </a>
