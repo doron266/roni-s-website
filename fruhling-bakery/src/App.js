@@ -1,10 +1,22 @@
 import React, { useContext, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider, LanguageContext } from './LanguageContext';
 import Header from './Header';
 import About from './About';
 import Products from './Products';
 import Gallery from './Gallery';
 import Footer from './Footer';
+import OrderPage from './OrderPage';
+
+function HomePage() {
+  return (
+    <main>
+      <About />
+      <Products />
+      <Gallery />
+    </main>
+  );
+}
 
 function InnerApp() {
   const { lang } = useContext(LanguageContext);
@@ -16,15 +28,14 @@ function InnerApp() {
   }, [lang]);
 
   return (
-    <>
+    <Router>
       <Header />
-      <main>
-        <About />
-        <Products />
-        <Gallery />
-      </main>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/order" element={<OrderPage />} />
+      </Routes>
       <Footer />
-    </>
+    </Router>
   );
 }
 
