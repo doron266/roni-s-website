@@ -94,8 +94,8 @@ jobs:
         docker build -t $IMAGE_CADDY_NAME:latest -f CaddyDockerfile --build-arg Caddyfile=Caddyfile .
 
         # Tag it for ECR
-        docker tag $IMAGE_WEB_NAME:latest $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
-        docker tag $IMAGE_CADDY_NAME:latest $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
+        docker tag $IMAGE_WEB_NAME:latest $ECR_REGISTRY/$IMAGE_WEB_NAME:latest
+        docker tag $IMAGE_CADDY_NAME:latest $ECR_REGISTRY/$IMAGE_CADDY_NAME:latest
         # Push to ECR
         docker push $ECR_REGISTRY/$IMAGE_WEB_NAME:$IMAGE_TAG
         docker push $ECR_REGISTRY/$IMAGE_CADDY_NAME:$IMAGE_TAG
