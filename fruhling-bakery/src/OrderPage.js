@@ -56,7 +56,7 @@ export default function OrderPage() {
         name: { he: 'עוגה מעוצבת', en: 'Designed Cake' },
         price: 250,
         image:
-          'https://roni-s-website.s3.eu-north-1.amazonaws.com/jpegmini_optimized/desinged_cake.jpg',
+          'https://roni-s-website.s3.eu-north-1.amazonaws.com/jpegmini_optimized/designed_cake.jpg',
         description: {
           he: 'עוגה מעוצבת בהתאמה אישית לחגיגה מושלמת.',
           en: 'A bespoke designed cake customized for your celebration.',
