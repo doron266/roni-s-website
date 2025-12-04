@@ -88,7 +88,16 @@ footer { background: linear-gradient(135deg, #ffc4e1 0%, #ffb3d9 100%); color:wh
 .product-card:hover .product-card__image { transform: scale(1.05); }
 .product-card__add { position: absolute; bottom: 12px; right: 12px; background: #e05098; border: none; color: white; width: 44px; height: 44px; border-radius: 50%; font-size: 1.5rem; font-weight: 800; cursor: pointer; box-shadow: 0 12px 20px rgba(224,80,152,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .product-card__add:hover, .product-card__add:focus-visible { transform: translateY(-2px); box-shadow: 0 16px 26px rgba(224,80,152,0.45); outline: none; }
-.product-card__body { padding: 1rem 1.1rem 1.3rem; display: flex; flex-direction: column; gap: 0.6rem; height: 100%; }
+.product-card__body {
+  padding: 1rem 1.1rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  height: 100%;
+  background: #ffffff;
+  min-height: 180px;
+  border-top: 1px solid #ffe1ef;
+}
 .product-card__header { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
 .product-card__title { font-size: 1.15rem; color: #c1327d; }
 .product-card__price { background: #fff0f7; color: #d13f88; padding: 0.35rem 0.7rem; border-radius: 999px; font-weight: 700; border: 1px solid #ffd1e6; }

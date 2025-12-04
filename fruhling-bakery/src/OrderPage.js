@@ -5,14 +5,16 @@ export default function OrderPage() {
   const { t, lang } = useContext(LanguageContext);
   const [cart, setCart] = useState({});
 
-  const products = useMemo(
-    () => ([
+  const products = useMemo(() => {
+    const productImageBase =
+      'https://roni-s-website.s3.eu-north-1.amazonaws.com/fruhling-bakery.products';
+
+    return [
       {
         id: 'krokumbush',
         name: { he: 'קרוקומבוש', en: 'Krokumbush' },
         price: 450,
-        image:
-          'https://roni-s-website.s3.eu-north-1.amazonaws.com/jpegmini_optimized/krokumbush-flowers.jpg',
+        image: `${productImageBase}/krokumbush.jpg`,
         description: {
           he: 'מגדל פחזניות חגיגי ממולא בקרם וניל וקישוטי פרחים.',
           en: 'A celebratory croquembouche filled with vanilla cream and decorated with flowers.',
@@ -22,8 +24,7 @@ export default function OrderPage() {
         id: 'saint-honore',
         name: { he: 'סן אונורה', en: 'Saint-Honoré' },
         price: 250,
-        image:
-          'https://roni-s-website.s3.eu-north-1.amazonaws.com/jpegmini_optimized/saint-honore.jpg',
+        image: `${productImageBase}/saint-honore.jpg`,
         description: {
           he: 'קלאסיקה פריזאית עם עלים מקורמלים, קרם דיפלומט וקרמל.',
           en: 'A Parisian classic with caramelized puffs, diplomat cream, and caramel.',
@@ -33,8 +34,7 @@ export default function OrderPage() {
         id: 'millioner-cookie',
         name: { he: 'עוגיות מיליונר (10)', en: 'Millionaire Cookies (10)' },
         price: 200,
-        image:
-          'https://roni-s-website.s3.eu-north-1.amazonaws.com/jpegmini_optimized/millionercookie.jpg',
+        image: `${productImageBase}/millioner-cookie.jpg`,
         description: {
           he: '10 יחידות עוגיות עשירות בשכבות קרמל ושוקולד.',
           en: '10 indulgent cookies layered with caramel and chocolate.',
@@ -44,8 +44,7 @@ export default function OrderPage() {
         id: 'pavlova',
         name: { he: 'פבלובה', en: 'Pavlova' },
         price: 200,
-        image:
-          'https://roni-s-website.s3.eu-north-1.amazonaws.com/jpegmini_optimized/pavlova.jpg',
+        image: `${productImageBase}/pavlova.jpg`,
         description: {
           he: 'מרנג קריספי עם קרם עשיר ופירות טריים.',
           en: 'Crisp meringue with rich cream and fresh fruits.',
@@ -55,16 +54,14 @@ export default function OrderPage() {
         id: 'designed-cake',
         name: { he: 'עוגה מעוצבת', en: 'Designed Cake' },
         price: 250,
-        image:
-          'https://roni-s-website.s3.eu-north-1.amazonaws.com/jpegmini_optimized/designed_cake.jpg',
+        image: `${productImageBase}/designed-cakes.jpg`,
         description: {
           he: 'עוגה מעוצבת בהתאמה אישית לחגיגה מושלמת.',
           en: 'A bespoke designed cake customized for your celebration.',
         },
       },
-    ]),
-    []
-  );
+    ];
+  }, []);
 
   const handleAdd = (productId) => {
     setCart((prev) => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }));
